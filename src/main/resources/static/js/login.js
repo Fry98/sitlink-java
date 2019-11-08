@@ -3,7 +3,7 @@ particlesJS.load('particles-js', '/assets/particles.json');
 // Login form submission
 $('form').submit((e) => {
   e.preventDefault();
-  $.ajax('/api/login.php', {
+  $.ajax('/api/login', {
     method: 'POST',
     data: {
       nick: $('#nick').val(),

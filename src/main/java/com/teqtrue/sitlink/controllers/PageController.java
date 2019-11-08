@@ -1,6 +1,9 @@
 package com.teqtrue.sitlink.controllers;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -18,8 +21,19 @@ public class PageController {
   }
 
   @GetMapping("/c/{sub}")
-  public String chat(@PathVariable("sub") String sub) {
+  public String chat(@PathVariable("sub") String sub, Model model, HttpServletRequest req) {
+    if (req.getSession().getAttribute("nick") == null) {
+      return "redirect:/";
+    }
+
+    model.addAttribute("sub", "Placeholder");
     return "chat";
+  }
+
+  @GetMapping("/logout")
+  public String logout(HttpServletRequest req) {
+    req.getSession().invalidate();
+    return "redirect:/";
   }
 
   @GetMapping("/404")

@@ -63,16 +63,16 @@ $('form').submit((e) => {
     alert('E-mail can only be up to 30 characters long!');
     return;
   }
-  if (reader.result === null) {
-    alert("Profile picture has to be selected!");
-    return; 
-  }
+  // if (reader.result === null) {
+  //   alert("Profile picture has to be selected!");
+  //   return; 
+  // }
 
   // Displays loader
   $('#loader').css('display', 'flex');
 
   // POST request to the SITLINK API
-  $.ajax('/api/add_user.php', {
+  $.ajax('/api/user', {
     method: 'POST',
     data: {
       nick,
