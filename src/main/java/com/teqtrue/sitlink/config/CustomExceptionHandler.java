@@ -1,6 +1,6 @@
 package com.teqtrue.sitlink.config;
 
-import com.teqtrue.sitlink.exceptions.CustomException;
+import com.teqtrue.sitlink.exceptions.RequestException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -10,8 +10,8 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 @RestController
 public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
-  @ExceptionHandler(CustomException.class)
-  public final ResponseEntity<String> handleNotFoundException(CustomException ex) {
+  @ExceptionHandler(RequestException.class)
+  public final ResponseEntity<String> handleNotFoundException(RequestException ex) {
     return new ResponseEntity<String>(ex.getMessage(), ex.getStatus());
   }
 }

@@ -2,10 +2,10 @@ package com.teqtrue.sitlink.exceptions;
 
 import org.springframework.http.HttpStatus;
 
-public class CustomException extends RuntimeException {
+public class RequestException extends RuntimeException {
   private HttpStatus status;
 
-  public CustomException(String message, HttpStatus status) {
+  public RequestException(String message, HttpStatus status) {
     super(message);
     this.status = status;
   }

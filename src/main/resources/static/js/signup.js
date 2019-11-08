@@ -59,8 +59,8 @@ $('form').submit((e) => {
     alert("Invalid e-mail address!");
     return;
   }
-  if (mail.length > 30) {
-    alert('E-mail can only be up to 30 characters long!');
+  if (mail.length > 40) {
+    alert('E-mail can only be up to 40 characters long!');
     return;
   }
   // if (reader.result === null) {
