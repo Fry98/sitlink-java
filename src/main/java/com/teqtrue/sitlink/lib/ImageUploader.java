@@ -10,7 +10,7 @@ import org.json.JSONObject;
 
 public class ImageUploader {
   public static String upload(String imageData) {
-    if (imageData == null) return null;
+    if (imageData == null || imageData.length() == 0) return null;
     HttpPost post = new HttpPost("https://api.imgur.com/3/image");
     post.addHeader("Authorization", "Client-ID 50f7d3db60cd85e");
     CloseableHttpClient httpClient = HttpClients.createDefault();

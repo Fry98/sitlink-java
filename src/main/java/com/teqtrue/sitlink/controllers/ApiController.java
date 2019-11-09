@@ -2,8 +2,10 @@ package com.teqtrue.sitlink.controllers;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import com.teqtrue.sitlink.dao.UserDao;
 import com.teqtrue.sitlink.exceptions.RequestException;
 import com.teqtrue.sitlink.lib.ImageUploader;
+import com.teqtrue.sitlink.model.User;
 import org.jasypt.util.password.StrongPasswordEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +18,9 @@ public class ApiController {
 
   @Autowired
   private StrongPasswordEncryptor passEnc;
+
+  @Autowired
+  private UserDao userDao;
   
   @PostMapping("/user")
   public void createUser(
@@ -39,12 +44,12 @@ public class ApiController {
     }
 
     String pwdHash = passEnc.encryptPassword(pwd);
-
-    System.out.println(nick);
-    System.out.println(mail);
-    System.out.println(pwdHash);
-    System.out.println(picUrl);
-    System.out.println(passEnc.checkPassword(pwd, pwdHash));
     
+    userDao.persist(new User(
+      nick,
+      mail,
+      picUrl,
+      pwdHash
+    ));
   }
 }

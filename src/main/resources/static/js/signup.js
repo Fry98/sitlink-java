@@ -63,10 +63,10 @@ $('form').submit((e) => {
     alert('E-mail can only be up to 40 characters long!');
     return;
   }
-  // if (reader.result === null) {
-  //   alert("Profile picture has to be selected!");
-  //   return; 
-  // }
+  if (reader.result === null) {
+    alert("Profile picture has to be selected!");
+    return; 
+  }
 
   // Displays loader
   $('#loader').css('display', 'flex');
