@@ -1,19 +1,40 @@
 package com.teqtrue.sitlink.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 
 @Entity
+@Table(indexes = {
+  @Index(name = "nick", columnList = "nick", unique = true)
+})
+@NamedQueries({
+  @NamedQuery(name = "User.findByNick", query = "SELECT u from User u WHERE u.nick = :nick")
+})
 public class User {
   @Id
   @GeneratedValue(strategy=GenerationType.AUTO)
   private Integer id;
+
+  @Column(nullable = false)
   private String nick;
+
+  @Column(nullable = false)
   private String mail;
+
+  @Column(nullable = false)
   private String img;
+
+  @Column(nullable = false)
   private String password;
+
+  public User() {}
 
   public User(String nick, String mail, String img, String password) {
     this.nick = nick;
