@@ -10,6 +10,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 @RestController
 public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
+  
   @ExceptionHandler(RequestException.class)
   public final ResponseEntity<String> handleNotFoundException(RequestException ex) {
     return new ResponseEntity<String>(ex.getMessage(), ex.getStatus());

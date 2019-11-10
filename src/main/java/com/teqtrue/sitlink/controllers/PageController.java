@@ -11,7 +11,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 public class PageController {
 
   @GetMapping("/")
-  public String index() {
+  public String index(HttpServletRequest req) {
+    if (req.getSession().getAttribute("id") != null) {
+      return "redirect:/c/nexus";
+    }
+
     return "index";
   }
 
@@ -21,12 +25,16 @@ public class PageController {
   }
 
   @GetMapping("/c/{sub}")
-  public String chat(@PathVariable("sub") String sub, Model model, HttpServletRequest req) {
-    if (req.getSession().getAttribute("nick") == null) {
+  public String chat(
+    @PathVariable("sub") String sub,
+    Model model,
+    HttpServletRequest req
+  ) {
+    if (req.getSession().getAttribute("id") == null) {
       return "redirect:/";
     }
 
-    model.addAttribute("sub", "Placeholder");
+    model.addAttribute("sub", sub);
     return "chat";
   }
 

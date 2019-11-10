@@ -2,6 +2,7 @@ package com.teqtrue.sitlink.controllers;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import javax.servlet.http.HttpServletRequest;
 import com.teqtrue.sitlink.dao.UserDao;
 import com.teqtrue.sitlink.exceptions.RequestException;
 import com.teqtrue.sitlink.lib.ImageUploader;
@@ -54,5 +55,23 @@ public class ApiController {
       picUrl,
       pwdHash
     ));
+  }
+
+  @PostMapping("/login")
+  public void login(
+    @RequestParam(name = "nick", required = false) String nick,
+    @RequestParam(name = "pwd", required = false) String pwd,
+    HttpServletRequest req
+  ) {
+    if (nick == null || pwd == null) {
+      throw new RequestException("Invalid user data!", HttpStatus.BAD_REQUEST); 
+    }
+
+    User user = userDao.findByNick(nick);
+    if (user == null || !passEnc.checkPassword(pwd, user.getPassword())) {
+      throw new RequestException("Incorrect nickname or password!", HttpStatus.UNAUTHORIZED);
+    }
+
+    req.getSession().setAttribute("id", user.getId());
   }
 }

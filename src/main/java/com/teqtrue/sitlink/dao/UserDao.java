@@ -1,5 +1,6 @@
 package com.teqtrue.sitlink.dao;
 
+import java.util.Objects;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
@@ -15,10 +16,12 @@ public class UserDao {
 
   @Transactional
   public void persist(User user) {
+    Objects.requireNonNull(user);
     em.persist(user);
   }
 
   public User findByNick(String nick) {
+    Objects.requireNonNull(nick);
     try {
       return em.createNamedQuery("User.findByNick", User.class).setParameter("nick", nick).getSingleResult();
     } catch (NoResultException e) {
