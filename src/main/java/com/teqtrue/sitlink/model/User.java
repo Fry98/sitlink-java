@@ -1,5 +1,8 @@
 package com.teqtrue.sitlink.model;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -19,7 +23,7 @@ import javax.persistence.Table;
 })
 public class User {
   @Id
-  @GeneratedValue(strategy=GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.AUTO)
   private Integer id;
 
   @Column(nullable = false)
@@ -33,6 +37,12 @@ public class User {
 
   @Column(nullable = false)
   private String password;
+
+  @OneToMany(mappedBy = "admin", cascade = CascadeType.REMOVE)
+  private List<Subchat> subs;
+
+  @OneToMany(mappedBy = "sender", cascade = CascadeType.REMOVE)
+  private List<Message> messages;
 
   public User() {}
 
