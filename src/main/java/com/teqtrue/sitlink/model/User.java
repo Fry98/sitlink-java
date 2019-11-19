@@ -1,7 +1,9 @@
 package com.teqtrue.sitlink.model;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-
+import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -39,10 +41,10 @@ public class User {
   private String password;
 
   @OneToMany(mappedBy = "admin", cascade = CascadeType.REMOVE)
-  private List<Subchat> subs;
+  private Set<Subchat> subs = new HashSet<>();
 
   @OneToMany(mappedBy = "sender", cascade = CascadeType.REMOVE)
-  private List<Message> messages;
+  private List<Message> messages = new ArrayList<>();
 
   public User() {}
 
