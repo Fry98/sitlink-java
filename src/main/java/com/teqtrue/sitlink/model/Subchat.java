@@ -6,9 +6,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
@@ -24,10 +21,7 @@ import javax.persistence.Table;
 @NamedQueries({
   @NamedQuery(name = "Subchat.findByTitle", query = "SELECT u from Subchat u WHERE u.title = :title")
 })
-public class Subchat {
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private Integer id;
+public class Subchat extends BaseEntity {
 
   @Column(nullable = false)
   private String title;

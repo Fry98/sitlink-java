@@ -5,9 +5,6 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
@@ -22,10 +19,7 @@ import javax.persistence.Table;
 @NamedQueries({
   @NamedQuery(name = "User.findByNick", query = "SELECT u from User u WHERE u.nick = :nick")
 })
-public class User {
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private Integer id;
+public class User extends BaseEntity {
 
   @Column(nullable = false)
   private String nick;
@@ -55,10 +49,6 @@ public class User {
     this.mail = mail;
     this.img = img;
     this.password = password;
-  }
-
-  public Integer getId() {
-    return id;
   }
 
   public String getNick() {

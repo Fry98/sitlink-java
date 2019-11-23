@@ -4,21 +4,14 @@ import java.util.Objects;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
 import com.teqtrue.sitlink.model.Subchat;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class SubchatDao {
+public class SubchatDao extends BaseDao<Subchat> {
 
   @PersistenceContext
   private EntityManager em;
-
-  @Transactional
-  public void persist(Subchat user) {
-    Objects.requireNonNull(user);
-    em.persist(user);
-  }
 
   public Subchat findByTitle(String title) {
     Objects.requireNonNull(title);
