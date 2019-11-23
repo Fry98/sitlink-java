@@ -9,17 +9,12 @@ import javax.persistence.FetchType;
 import javax.persistence.Index;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
 @Table(indexes = {
   @Index(name = "title", columnList = "title", unique = true)
-})
-@NamedQueries({
-  @NamedQuery(name = "Subchat.findByTitle", query = "SELECT u from Subchat u WHERE u.title = :title")
 })
 public class Subchat extends BaseEntity {
 
@@ -32,7 +27,7 @@ public class Subchat extends BaseEntity {
   @ManyToOne(fetch = FetchType.LAZY)
   private User admin;
 
-  @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
+  @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "subchat")
   private List<Channel> channels = new ArrayList<>();
 
   @ManyToMany
@@ -49,6 +44,7 @@ public class Subchat extends BaseEntity {
   public void addChannel(Channel... chans) {
     for (Channel chan : chans) {
       channels.add(chan);
+      chan.setSubchat(this);
     }
   }
 

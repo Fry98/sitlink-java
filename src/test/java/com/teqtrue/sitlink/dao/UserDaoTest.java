@@ -34,7 +34,7 @@ public class UserDaoTest {
       "superduperurl",
       "hashedgarbage"
     );
-    dao.persist(newUser);
+    dao.save(newUser);
     
     User userFromDb = em.find(User.class, newUser.getId());
     assertTrue(userFromDb != null);

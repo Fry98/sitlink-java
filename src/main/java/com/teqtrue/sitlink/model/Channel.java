@@ -5,16 +5,25 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Index;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 @Entity
+@Table(indexes = {
+  @Index(name = "name", columnList = "name", unique = false)
+})
 public class Channel extends BaseEntity {
 
   @Column(nullable = false)
   private String name;
 
-  @OneToMany(cascade = CascadeType.REMOVE)
+  @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "channel")
   private List<Message> messages = new ArrayList<>();
+
+  @ManyToOne
+  private Subchat subchat;
 
   public Channel() {}
 
@@ -25,4 +34,12 @@ public class Channel extends BaseEntity {
   public String getName() {
     return name;
   }
+
+  public void setSubchat(Subchat sub) {
+    subchat = sub;
+  }
+
+  public void addMessage(Message msg) {
+    messages.add(msg);
+  } 
 }

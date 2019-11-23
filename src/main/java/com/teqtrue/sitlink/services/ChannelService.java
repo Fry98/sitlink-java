@@ -14,7 +14,7 @@ public class ChannelService {
 
   public void persist(Channel... channels) {
     for (Channel chan : channels) {
-      chanDao.persist(chan);
+      chanDao.save(chan);
     }
   }
 }

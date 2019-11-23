@@ -7,7 +7,6 @@ import com.teqtrue.sitlink.model.User;
 import com.teqtrue.sitlink.services.ChannelService;
 import com.teqtrue.sitlink.services.SubchatService;
 import com.teqtrue.sitlink.services.UserService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -40,8 +39,8 @@ public class DatabaseSetup {
       Channel anime = new Channel("anime");
       nexus.addChannel(general, videogames, tvShows, coding, anime);
 
-      chanService.persist(general, videogames, tvShows, coding, anime);
       subService.persist(nexus);
+      chanService.persist(general, videogames, tvShows, coding, anime);
     }
   }
 }

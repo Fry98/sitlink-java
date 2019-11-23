@@ -17,6 +17,6 @@ public class SubchatService {
   }
 
   public void persist(Subchat sub) {
-    subDao.persist(sub);
+    subDao.save(sub);
   }
 }

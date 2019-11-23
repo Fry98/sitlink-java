@@ -29,7 +29,7 @@ public class UserService {
       img,
       pwdHash
     );
-    userDao.persist(newUser);
+    userDao.save(newUser);
     return newUser;
   }
 
@@ -48,7 +48,7 @@ public class UserService {
       "root",
       "root"
     );
-    userDao.persist(root);
+    userDao.save(root);
     return root;
   }
 }

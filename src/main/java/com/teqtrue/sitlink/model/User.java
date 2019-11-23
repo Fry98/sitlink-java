@@ -7,17 +7,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Index;
 import javax.persistence.ManyToMany;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
 @Table(indexes = {
   @Index(name = "nick", columnList = "nick", unique = true)
-})
-@NamedQueries({
-  @NamedQuery(name = "User.findByNick", query = "SELECT u from User u WHERE u.nick = :nick")
 })
 public class User extends BaseEntity {
 
@@ -81,5 +76,9 @@ public class User extends BaseEntity {
 
   public void setPassword(String password) {
     this.password = password;
+  }
+
+  public void addMessage(Message message) {
+    this.messages.add(message);
   }
 }

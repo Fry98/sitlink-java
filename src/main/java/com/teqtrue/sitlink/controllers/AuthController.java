@@ -1,7 +1,5 @@
 package com.teqtrue.sitlink.controllers;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpServletRequest;
 import com.teqtrue.sitlink.dao.UserDao;
 import com.teqtrue.sitlink.exceptions.RequestException;
@@ -11,12 +9,14 @@ import com.teqtrue.sitlink.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api")
-public class ApiController {
-
+public class AuthController {
+  
   @Autowired
   private UserDao userDao;
 
@@ -39,6 +39,8 @@ public class ApiController {
     if (pwd == null || pwd.length() < 6 || pwd.length() > 30) {
       throw new RequestException("Invalid password!", HttpStatus.BAD_REQUEST);
     }
+
+    // TODO: Fix mail RegEx
     if (mail == null || mail.length() > 40 || mail.matches("/^(.+)@(.+)\\.(.+)$/")) {
       throw new RequestException("Invalid e-mail address!", HttpStatus.BAD_REQUEST);
     }
