@@ -38,10 +38,10 @@ public class UserDaoTest {
     
     User userFromDb = em.find(User.class, newUser.getId());
     assertTrue(userFromDb != null);
-    assertTrue(userFromDb.getNick() == "test");
-    assertTrue(userFromDb.getMail() == "te@s.t");
-    assertTrue(userFromDb.getImg() == "superduperurl");
-    assertTrue(userFromDb.getPassword() == "hashedgarbage");
+    assertTrue(userFromDb.getNick().equals("test"));
+    assertTrue(userFromDb.getMail().equals("te@s.t"));
+    assertTrue(userFromDb.getImg().equals("superduperurl"));
+    assertTrue(userFromDb.getPassword().equals("hashedgarbage"));
   }
 
   @Test
@@ -54,10 +54,10 @@ public class UserDaoTest {
     ));
     User userFromDb = dao.findByNick("test");
     assertTrue(userFromDb != null);
-    assertTrue(userFromDb.getNick() == "test");
-    assertTrue(userFromDb.getMail() == "te@s.t");
-    assertTrue(userFromDb.getImg() == "superduperurl");
-    assertTrue(userFromDb.getPassword() == "hashedgarbage");
+    assertTrue(userFromDb.getNick().equals("test"));
+    assertTrue(userFromDb.getMail().equals("te@s.t"));
+    assertTrue(userFromDb.getImg().equals("superduperurl"));
+    assertTrue(userFromDb.getPassword().equals("hashedgarbage"));
   }
 
   @Test

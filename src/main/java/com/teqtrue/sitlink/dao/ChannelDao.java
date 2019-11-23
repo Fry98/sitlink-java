@@ -14,10 +14,8 @@ public class ChannelDao {
   private EntityManager em;
 
   @Transactional
-  public void persist(Channel... channels) {
-    Objects.requireNonNull(channels);
-    for (Channel chan : channels) {
-      em.persist(chan);
-    }
+  public void persist(Channel channel) {
+    Objects.requireNonNull(channel);
+    em.persist(channel);
   }
 }

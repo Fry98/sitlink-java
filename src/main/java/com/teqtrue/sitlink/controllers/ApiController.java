@@ -7,7 +7,7 @@ import com.teqtrue.sitlink.dao.UserDao;
 import com.teqtrue.sitlink.exceptions.RequestException;
 import com.teqtrue.sitlink.lib.ImageUploader;
 import com.teqtrue.sitlink.model.User;
-import org.jasypt.util.password.StrongPasswordEncryptor;
+import com.teqtrue.sitlink.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,10 +18,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class ApiController {
 
   @Autowired
-  private StrongPasswordEncryptor passEnc;
+  private UserDao userDao;
 
   @Autowired
-  private UserDao userDao;
+  private UserService userService;
   
   @PostMapping("/user")
   public void createUser(
@@ -33,7 +33,7 @@ public class ApiController {
     if (nick == null || nick.length() < 3 || nick.length() > 30) {
       throw new RequestException("Invalid nickname!", HttpStatus.BAD_REQUEST);
     }
-    if (userDao.findByNick(nick) != null) {
+    if (userService.isNicknameTaken(nick)) {
       throw new RequestException("Nickname is already taken!", HttpStatus.CONFLICT);
     }
     if (pwd == null || pwd.length() < 6 || pwd.length() > 30) {
@@ -48,13 +48,7 @@ public class ApiController {
       throw new RequestException("Invalid image file!", HttpStatus.BAD_REQUEST);
     }
 
-    String pwdHash = passEnc.encryptPassword(pwd);    
-    userDao.persist(new User(
-      nick,
-      mail,
-      picUrl,
-      pwdHash
-    ));
+    userService.createUser(nick, mail, picUrl, pwd);
   }
 
   @PostMapping("/login")
@@ -68,7 +62,7 @@ public class ApiController {
     }
 
     User user = userDao.findByNick(nick);
-    if (user == null || !passEnc.checkPassword(pwd, user.getPassword())) {
+    if (user == null || !userService.authUser(user, pwd)) {
       throw new RequestException("Incorrect nickname or password!", HttpStatus.UNAUTHORIZED);
     }
 

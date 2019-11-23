@@ -1,7 +1,7 @@
 package com.teqtrue.sitlink.model;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Index;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -37,8 +38,11 @@ public class Subchat {
   @ManyToOne(fetch = FetchType.LAZY)
   private User admin;
 
-  @OneToMany(cascade = CascadeType.REMOVE)
-  private Set<Channel> channels = new HashSet<>();
+  @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
+  private List<Channel> channels = new ArrayList<>();
+
+  @ManyToMany
+  private List<User> followers = new ArrayList<>();
 
   public Subchat() {}
 
@@ -52,5 +56,21 @@ public class Subchat {
     for (Channel chan : chans) {
       channels.add(chan);
     }
+  }
+
+  public String getTitle() {
+    return title;
+  }
+
+  public String getDesc() {
+    return description;
+  }
+
+  public List<Channel> getChannels() {
+    return channels;
+  }
+
+  public User getAdmin() {
+    return admin;
   }
 }

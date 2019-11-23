@@ -113,6 +113,7 @@
     <aside id='sidebar'>
       <!-- Channel list and selector -->
       <ul id='chans'>
+        <li th:each="chan: ${chans}" th:text="'#' + ${chan.getName()}"></li>
       </ul>
       <!-- Subchats and follow button -->
       <div id='ctrls'>
@@ -147,6 +148,14 @@
       </div>
     </div>
   </main>
+  <script th:inline="javascript">
+    // Variables injected from back-end into the front-end
+    /*<![CDATA[*/
+      const sub = /*[[${sub}]]*/ 'default';
+      const admin = /*[[${admin}]]*/ false;
+      const chans = /*[[${chanArr}]]*/ [];
+    /*]]>*/
+  </script>  
   <!-- <script src="/js/chat.js"></script> -->
 </body>
 </html>

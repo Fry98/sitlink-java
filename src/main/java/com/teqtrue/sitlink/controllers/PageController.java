@@ -2,6 +2,10 @@ package com.teqtrue.sitlink.controllers;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.teqtrue.sitlink.dao.SubchatDao;
+import com.teqtrue.sitlink.model.Subchat;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,6 +13,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 public class PageController {
+
+  @Autowired
+  private SubchatDao subDao;
 
   @GetMapping("/")
   public String index(HttpServletRequest req) {
@@ -34,7 +41,13 @@ public class PageController {
       return "redirect:/";
     }
 
-    model.addAttribute("sub", sub);
+    Subchat subObj = subDao.findByTitle(sub);
+    if (subObj == null) return "redirect:/c/nexus";
+
+    model.addAttribute("sub", subObj.getTitle());
+    model.addAttribute("chans", subObj.getChannels());
+    model.addAttribute("admin", subObj.getAdmin().getId() == req.getSession().getAttribute("id"));
+    model.addAttribute("chanArr", subObj.getChannels().stream().map(x -> x.getName()).toArray());
     return "chat";
   }
 

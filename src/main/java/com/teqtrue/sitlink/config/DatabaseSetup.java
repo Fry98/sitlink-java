@@ -1,12 +1,13 @@
 package com.teqtrue.sitlink.config;
 
 import javax.annotation.PostConstruct;
-import com.teqtrue.sitlink.dao.ChannelDao;
-import com.teqtrue.sitlink.dao.SubchatDao;
-import com.teqtrue.sitlink.dao.UserDao;
 import com.teqtrue.sitlink.model.Channel;
 import com.teqtrue.sitlink.model.Subchat;
 import com.teqtrue.sitlink.model.User;
+import com.teqtrue.sitlink.services.ChannelService;
+import com.teqtrue.sitlink.services.SubchatService;
+import com.teqtrue.sitlink.services.UserService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,24 +15,19 @@ import org.springframework.stereotype.Component;
 public class DatabaseSetup {
 
   @Autowired
-  private SubchatDao subDao;
+  private UserService userService;
 
   @Autowired
-  private UserDao userDao;
+  private SubchatService subService;
 
   @Autowired
-  private ChannelDao chanDao;
+  private ChannelService chanService;
 
   @PostConstruct
   public void initDb() {
-    if (subDao.findByTitle("nexus") == null) {
+    if (subService.exists("nexus")) {
       System.out.println("RUNNING DB SETUP!");
-      User root = new User(
-        "root",
-        "root",
-        "root",
-        "root"
-      );
+      User root = userService.createRoot();
       Subchat nexus = new Subchat(
         "Nexus",
         "The default subchat on SITLINK.",
@@ -44,9 +40,8 @@ public class DatabaseSetup {
       Channel anime = new Channel("anime");
       nexus.addChannel(general, videogames, tvShows, coding, anime);
 
-      userDao.persist(root);
-      chanDao.persist(general, videogames, tvShows, coding, anime);
-      subDao.persist(nexus);
+      chanService.persist(general, videogames, tvShows, coding, anime);
+      subService.persist(nexus);
     }
   }
 }
