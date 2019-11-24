@@ -19,6 +19,7 @@ public class DatabaseSetup {
 
   private final ChannelService chanService;
 
+  @Autowired
   public DatabaseSetup(UserService userService, SubchatService subService, ChannelService chanService) {
     this.userService = userService;
     this.subService = subService;

@@ -11,6 +11,7 @@ public class SubchatService {
 
   private final SubchatDao subDao;
 
+  @Autowired
   public SubchatService(SubchatDao subDao) {
     this.subDao = subDao;
   }

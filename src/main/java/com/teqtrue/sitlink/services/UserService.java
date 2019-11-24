@@ -15,6 +15,7 @@ public class UserService {
 
   private final StrongPasswordEncryptor passEnc;
 
+  @Autowired
   public UserService(UserDao userDao, StrongPasswordEncryptor passEnc) {
     this.userDao = userDao;
     this.passEnc = passEnc;

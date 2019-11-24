@@ -11,6 +11,7 @@ public class ChannelService {
 
   private final ChannelDao chanDao;
 
+  @Autowired
   public ChannelService(ChannelDao chanDao) {
     this.chanDao = chanDao;
   }

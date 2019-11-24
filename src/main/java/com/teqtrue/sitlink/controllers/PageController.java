@@ -16,6 +16,7 @@ public class PageController {
 
   private final SubchatDao subDao;
 
+  @Autowired
   public PageController(SubchatDao subDao) {
     this.subDao = subDao;
   }

@@ -28,6 +28,7 @@ public class MessageController {
 
   private final MessageService msgService;
 
+  @Autowired
   public MessageController(ChannelDao chanDao, UserDao userDao, MessageService msgService) {
     this.chanDao = chanDao;
     this.userDao = userDao;

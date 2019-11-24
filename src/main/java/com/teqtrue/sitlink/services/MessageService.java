@@ -17,6 +17,7 @@ public class MessageService {
 
   private final UserDao userDao;
 
+  @Autowired
   public MessageService(MessageDao msgDao, ChannelDao chanDao, UserDao userDao) {
     this.msgDao = msgDao;
     this.chanDao = chanDao;

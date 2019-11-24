@@ -21,6 +21,7 @@ public class AuthController {
 
   private final UserService userService;
 
+  @Autowired
   public AuthController(UserDao userDao, UserService userService) {
     this.userDao = userDao;
     this.userService = userService;
