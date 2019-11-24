@@ -17,12 +17,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api")
 public class AuthController {
   
-  @Autowired
-  private UserDao userDao;
+  private final UserDao userDao;
 
-  @Autowired
-  private UserService userService;
-  
+  private final UserService userService;
+
+  public AuthController(UserDao userDao, UserService userService) {
+    this.userDao = userDao;
+    this.userService = userService;
+  }
+
   @PostMapping("/user")
   public void createUser(
     @RequestParam(name = "nick", required = false) String nick,

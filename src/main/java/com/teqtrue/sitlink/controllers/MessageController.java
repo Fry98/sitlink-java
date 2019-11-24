@@ -22,15 +22,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api")
 public class MessageController {
 
-  @Autowired
-  private ChannelDao chanDao;
+  private final ChannelDao chanDao;
 
-  @Autowired
-  private UserDao userDao;
+  private final UserDao userDao;
 
-  @Autowired
-  private MessageService msgService;
-  
+  private final MessageService msgService;
+
+  public MessageController(ChannelDao chanDao, UserDao userDao, MessageService msgService) {
+    this.chanDao = chanDao;
+    this.userDao = userDao;
+    this.msgService = msgService;
+  }
+
   @PostMapping("/message")
   public void addMessage(
     @RequestParam(name = "sid", required = false) String sub,

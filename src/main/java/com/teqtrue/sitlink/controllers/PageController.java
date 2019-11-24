@@ -14,8 +14,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 @Controller
 public class PageController {
 
-  @Autowired
-  private SubchatDao subDao;
+  private final SubchatDao subDao;
+
+  public PageController(SubchatDao subDao) {
+    this.subDao = subDao;
+  }
 
   @GetMapping("/")
   public String index(HttpServletRequest req) {
