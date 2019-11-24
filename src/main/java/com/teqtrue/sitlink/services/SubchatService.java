@@ -9,8 +9,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class SubchatService {
 
-  @Autowired
-  private SubchatDao subDao;
+  private final SubchatDao subDao;
+
+  public SubchatService(SubchatDao subDao) {
+    this.subDao = subDao;
+  }
 
   public boolean exists(String subTitle) {
     return subDao.findByTitle(subTitle) == null;

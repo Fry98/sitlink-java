@@ -9,8 +9,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class ChannelService {
 
-  @Autowired
-  private ChannelDao chanDao;
+  private final ChannelDao chanDao;
+
+  public ChannelService(ChannelDao chanDao) {
+    this.chanDao = chanDao;
+  }
 
   public void persist(Channel... channels) {
     for (Channel chan : channels) {

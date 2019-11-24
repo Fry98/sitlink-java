@@ -11,14 +11,17 @@ import org.springframework.stereotype.Service;
 @Service
 public class MessageService {
 
-  @Autowired
-  private MessageDao msgDao;
+  private final MessageDao msgDao;
 
-  @Autowired
-  private ChannelDao chanDao;
+  private final ChannelDao chanDao;
 
-  @Autowired
-  private UserDao userDao;
+  private final UserDao userDao;
+
+  public MessageService(MessageDao msgDao, ChannelDao chanDao, UserDao userDao) {
+    this.msgDao = msgDao;
+    this.chanDao = chanDao;
+    this.userDao = userDao;
+  }
 
   public void addNewMessage(Message message) {
     msgDao.save(message);

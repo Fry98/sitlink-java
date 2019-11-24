@@ -13,14 +13,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class DatabaseSetup {
 
-  @Autowired
-  private UserService userService;
+  private final UserService userService;
 
-  @Autowired
-  private SubchatService subService;
+  private final SubchatService subService;
 
-  @Autowired
-  private ChannelService chanService;
+  private final ChannelService chanService;
+
+  public DatabaseSetup(UserService userService, SubchatService subService, ChannelService chanService) {
+    this.userService = userService;
+    this.subService = subService;
+    this.chanService = chanService;
+  }
 
   @PostConstruct
   public void initDb() {

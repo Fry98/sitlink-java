@@ -11,11 +11,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService {
 
-  @Autowired
-  private UserDao userDao;
+  private final UserDao userDao;
 
-  @Autowired
-  private StrongPasswordEncryptor passEnc;
+  private final StrongPasswordEncryptor passEnc;
+
+  public UserService(UserDao userDao, StrongPasswordEncryptor passEnc) {
+    this.userDao = userDao;
+    this.passEnc = passEnc;
+  }
 
   public boolean isNicknameTaken(String nickname) {
     return userDao.findByNick(nickname) != null;
