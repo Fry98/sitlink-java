@@ -38,7 +38,7 @@ public class ChannelDaoTest {
     User admin = new User(
         "admin",
         "ad@m.in",
-        "veryniceurl",
+        null,
         "hashedpwd"
     );
     em.persist(admin);

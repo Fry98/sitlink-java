@@ -7,6 +7,7 @@ import com.teqtrue.sitlink.dao.UserDao;
 import com.teqtrue.sitlink.exceptions.RequestException;
 import com.teqtrue.sitlink.lib.ImageUploader;
 import com.teqtrue.sitlink.model.Channel;
+import com.teqtrue.sitlink.model.Image;
 import com.teqtrue.sitlink.model.Message;
 import com.teqtrue.sitlink.model.User;
 import com.teqtrue.sitlink.services.MessageService;
@@ -23,9 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MessageController {
 
   private final ChannelDao chanDao;
-
   private final UserDao userDao;
-
   private final MessageService msgService;
 
   @Autowired
@@ -52,17 +51,17 @@ public class MessageController {
 
     Message newMsg = new Message();
     newMsg.setUser(user);
-    newMsg.setImage(img);
 
-    String msgContent = content;
     if (img) {
-      msgContent = ImageUploader.upload(content);
-      if (msgContent == null) throw new RequestException("Invalid image file!", HttpStatus.BAD_REQUEST);
+      Image imgObj = ImageUploader.upload(content);
+      if (imgObj == null) throw new RequestException("Invalid image file!", HttpStatus.BAD_REQUEST);
+      newMsg.setImage(imgObj);
+      newMsg.setContent(null);
+    } else {
+      newMsg.setContent(content);
     }
 
-    newMsg.setContent(msgContent);
     newMsg.setChannel(chan);
-
     msgService.addNewMessage(newMsg);
   }
 }

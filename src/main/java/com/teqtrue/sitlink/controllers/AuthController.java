@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import com.teqtrue.sitlink.dao.UserDao;
 import com.teqtrue.sitlink.exceptions.RequestException;
 import com.teqtrue.sitlink.lib.ImageUploader;
+import com.teqtrue.sitlink.model.Image;
 import com.teqtrue.sitlink.model.User;
 import com.teqtrue.sitlink.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
   
   private final UserDao userDao;
-
   private final UserService userService;
 
   @Autowired
@@ -49,12 +49,12 @@ public class AuthController {
       throw new RequestException("Invalid e-mail address!", HttpStatus.BAD_REQUEST);
     }
 
-    String picUrl = ImageUploader.upload(pic);
-    if (picUrl == null) {
+    Image profilePic = ImageUploader.upload(pic);
+    if (profilePic == null) {
       throw new RequestException("Invalid image file!", HttpStatus.BAD_REQUEST);
     }
 
-    userService.createUser(nick, mail, picUrl, pwd);
+    userService.createUser(nick, mail, profilePic, pwd);
   }
 
   @PostMapping("/login")

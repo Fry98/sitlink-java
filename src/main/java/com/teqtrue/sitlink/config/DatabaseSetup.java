@@ -14,9 +14,7 @@ import org.springframework.stereotype.Component;
 public class DatabaseSetup {
 
   private final UserService userService;
-
   private final SubchatService subService;
-
   private final ChannelService chanService;
 
   @Autowired

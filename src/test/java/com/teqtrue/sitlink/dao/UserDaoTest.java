@@ -7,6 +7,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import javax.persistence.EntityManager;
@@ -31,7 +32,7 @@ public class UserDaoTest {
     User newUser = new User(
       "test",
       "te@s.t",
-      "superduperurl",
+      null,
       "hashedgarbage"
     );
     dao.save(newUser);
@@ -40,7 +41,7 @@ public class UserDaoTest {
     assertTrue(userFromDb != null);
     assertTrue(userFromDb.getNick().equals("test"));
     assertTrue(userFromDb.getMail().equals("te@s.t"));
-    assertTrue(userFromDb.getImg().equals("superduperurl"));
+    assertNull(userFromDb.getImg());
     assertTrue(userFromDb.getPassword().equals("hashedgarbage"));
   }
 
@@ -49,14 +50,14 @@ public class UserDaoTest {
     em.persist(new User(
       "test",
       "te@s.t",
-      "superduperurl",
+      null,
       "hashedgarbage"
     ));
     User userFromDb = dao.findByNick("test");
     assertTrue(userFromDb != null);
     assertTrue(userFromDb.getNick().equals("test"));
     assertTrue(userFromDb.getMail().equals("te@s.t"));
-    assertTrue(userFromDb.getImg().equals("superduperurl"));
+    assertNull(userFromDb.getImg());
     assertTrue(userFromDb.getPassword().equals("hashedgarbage"));
   }
 

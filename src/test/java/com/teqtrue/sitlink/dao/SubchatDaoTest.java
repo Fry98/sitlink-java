@@ -42,7 +42,7 @@ public class SubchatDaoTest {
     return new User(
         "test",
         "te@s.t",
-        "superduperurl",
+        null,
         "hashedgarbage"
     );
   }

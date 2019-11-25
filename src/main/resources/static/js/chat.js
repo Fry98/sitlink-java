@@ -613,27 +613,6 @@
 //   }
 // }
 
-  // TODO: Remove test code
-  $.ajax('/api/message', {
-    method: 'POST',
-    data: {
-      sid: "nexus",
-      chan: "general",
-      img: false,
-      content: "this is test message"
-    },
-    error(res) {
-      alert(res.responseText);
-    },
-    complete() {
-      console.log('sent');
-      // if (chanName === currChan) {
-      //   startUpdateLoop(true);
-      // }
-    }
-  });
-
-
 // // Initializes new channel (I mean... the function name is pretty self-explanatory...)
 // function initChannel() {
 //   clearInterval(updateLoop);

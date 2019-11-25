@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.Index;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -22,8 +23,8 @@ public class User extends BaseEntity {
   @Column(nullable = false)
   private String mail;
 
-  @Column(nullable = false)
-  private String img;
+  @OneToOne
+  private Image img;
 
   @Column(nullable = false)
   private String password;
@@ -39,7 +40,7 @@ public class User extends BaseEntity {
 
   public User() {}
 
-  public User(String nick, String mail, String img, String password) {
+  public User(String nick, String mail, Image img, String password) {
     this.nick = nick;
     this.mail = mail;
     this.img = img;
@@ -54,7 +55,7 @@ public class User extends BaseEntity {
     return mail;
   }
 
-  public String getImg() {
+  public Image getImg() {
     return img;
   }
 
@@ -70,7 +71,7 @@ public class User extends BaseEntity {
     this.mail = mail;
   }
 
-  public void setImg(String img) {
+  public void setImg(Image img) {
     this.img = img;
   }
 

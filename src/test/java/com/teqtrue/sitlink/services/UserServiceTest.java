@@ -31,7 +31,7 @@ public class UserServiceTest {
     final User user = userService.createUser(
         "test user",
         "test@user.org",
-        "url.org",
+        null,
         "plainPassword"
     );
 
@@ -40,7 +40,7 @@ public class UserServiceTest {
     assertNotEquals(null, userFromDb);
     assertEquals("test user", userFromDb.getNick());
     assertEquals("test@user.org", userFromDb.getMail());
-    assertEquals("url.org", userFromDb.getImg());
+    assertNull(userFromDb.getImg());
   }
 
   @Test
@@ -49,7 +49,7 @@ public class UserServiceTest {
     final User user = userService.createUser(
         "test user",
         "test@user.org",
-        "url.org",
+        null,
         plainPassword
     );
 
@@ -64,7 +64,7 @@ public class UserServiceTest {
     final User user = userService.createUser(
         "test user",
         "test@user.org",
-        "url.org",
+        null,
         plainPassword
     );
 
@@ -77,7 +77,7 @@ public class UserServiceTest {
     final User user = userService.createUser(
         "test user",
         "test@user.org",
-        "url.org",
+        null,
         plainPassword
     );
 
@@ -90,7 +90,7 @@ public class UserServiceTest {
 
     assertEquals("root", root.getNick());
     assertEquals("root", root.getMail());
-    assertEquals("root", root.getImg());
+    assertNull(root.getImg());
     assertEquals("root", root.getPassword());
   }
 }
