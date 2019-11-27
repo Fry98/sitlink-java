@@ -14,9 +14,12 @@ import javax.persistence.Table;
 
 @Entity
 @Table(indexes = {
-  @Index(name = "title", columnList = "title", unique = true)
+  @Index(name = "url", columnList = "url", unique = true)
 })
 public class Subchat extends BaseEntity {
+
+  @Column(nullable = false)
+  private String url;
 
   @Column(nullable = false)
   private String title;
@@ -35,7 +38,8 @@ public class Subchat extends BaseEntity {
 
   public Subchat() {}
 
-  public Subchat(String title, String description, User admin) {
+  public Subchat(String url, String title, String description, User admin) {
+    this.url = url;
     this.title = title;
     this.description = description;
     this.admin = admin;
@@ -46,6 +50,10 @@ public class Subchat extends BaseEntity {
       channels.add(chan);
       chan.setSubchat(this);
     }
+  }
+
+  public String getUrl() {
+    return url;
   }
 
   public String getTitle() {

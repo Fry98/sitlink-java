@@ -30,6 +30,7 @@ public class DatabaseSetup {
       System.out.println("RUNNING DB SETUP!");
       User root = userService.createRoot();
       Subchat nexus = new Subchat(
+        "nexus",
         "Nexus",
         "The default subchat on SITLINK.",
         root

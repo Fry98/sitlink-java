@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api")
 public class MessageController {
-
   private final ChannelDao chanDao;
   private final UserDao userDao;
   private final MessageService msgService;
@@ -46,7 +45,7 @@ public class MessageController {
     Integer uid = (Integer) req.getSession().getAttribute("id");
     User user = userDao.findById(uid).get();
     
-    Channel chan = chanDao.findByNameAndSubchatTitle(chanName, sub);
+    Channel chan = chanDao.findByNameAndSubchatUrl(chanName, sub);
     if (chan == null) throw new RequestException("Invalid Subchat and/or channel!", HttpStatus.BAD_REQUEST);
 
     Message newMsg = new Message();

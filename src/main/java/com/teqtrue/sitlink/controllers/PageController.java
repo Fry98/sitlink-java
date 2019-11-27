@@ -45,10 +45,10 @@ public class PageController {
       return "redirect:/";
     }
 
-    Subchat subObj = subDao.findByTitle(sub);
+    Subchat subObj = subDao.findByUrl(sub);
     if (subObj == null) return "redirect:/c/nexus";
 
-    model.addAttribute("sub", subObj.getTitle());
+    model.addAttribute("sub", subObj.getUrl());
     model.addAttribute("chans", subObj.getChannels());
     model.addAttribute("admin", subObj.getAdmin().getId() == req.getSession().getAttribute("id"));
     model.addAttribute("chanArr", subObj.getChannels().stream().map(x -> x.getName()).toArray());

@@ -31,6 +31,11 @@ public class Channel extends BaseEntity {
     this.name = name;
   }
 
+  public Channel(String name, Subchat sub) {
+    this.name = name;
+    subchat = sub;
+  }
+
   public String getName() {
     return name;
   }

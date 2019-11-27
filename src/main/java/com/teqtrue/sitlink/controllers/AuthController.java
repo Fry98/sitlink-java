@@ -44,8 +44,7 @@ public class AuthController {
       throw new RequestException("Invalid password!", HttpStatus.BAD_REQUEST);
     }
 
-    // TODO: Fix mail RegEx
-    if (mail == null || mail.length() > 40 || mail.matches("/^(.+)@(.+)\\.(.+)$/")) {
+    if (mail == null || mail.length() > 40 || !mail.matches("^(.+)@(.+)\\.(.+)$")) {
       throw new RequestException("Invalid e-mail address!", HttpStatus.BAD_REQUEST);
     }
 

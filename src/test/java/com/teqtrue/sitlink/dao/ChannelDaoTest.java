@@ -30,23 +30,24 @@ public class ChannelDaoTest {
 
   private Channel prepareChannel() {
     return new Channel(
-        "test channel"
+      "test channel"
     );
   }
 
   private Subchat prepareSubchat() {
     User admin = new User(
-        "admin",
-        "ad@m.in",
-        null,
-        "hashedpwd"
+      "admin",
+      "ad@m.in",
+      null,
+      "hashedpwd"
     );
     em.persist(admin);
 
     return new Subchat(
-        "test subchat",
-        "test description",
-        admin
+      "test_subchat",
+      "test subchat",
+      "test description",
+      admin
     );
   }
 
@@ -72,7 +73,7 @@ public class ChannelDaoTest {
     em.persist(testChannel);
     em.persist(testSubchat);
 
-    Channel channelFromDb = dao.findByNameAndSubchatTitle("test channel", "test subchat");
+    Channel channelFromDb = dao.findByNameAndSubchatUrl("test channel", "test_subchat");
 
     assertNotEquals(null, channelFromDb);
     assertEquals("test channel", channelFromDb.getName());

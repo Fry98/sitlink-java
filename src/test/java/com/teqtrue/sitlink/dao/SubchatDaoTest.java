@@ -32,18 +32,19 @@ public class SubchatDaoTest {
 
   private Subchat prepareSubchat(User admin) {
     return new Subchat(
-        "test subchat",
-        "This is a test subchat",
-        admin
+      "test_subchat",
+      "test subchat",
+      "This is a test subchat",
+      admin
     );
   }
 
   private User prepareUser() {
     return new User(
-        "test",
-        "te@s.t",
-        null,
-        "hashedgarbage"
+      "test",
+      "te@s.t",
+      null,
+      "hashedgarbage"
     );
   }
 
@@ -58,6 +59,7 @@ public class SubchatDaoTest {
     Subchat subchatFromDb = em.find(Subchat.class, testSubchat.getId());
 
     assertNotEquals(null, subchatFromDb);
+    assertEquals("test_subchat", subchatFromDb.getUrl());
     assertEquals("test subchat", subchatFromDb.getTitle());
     assertEquals("This is a test subchat", subchatFromDb.getDesc());
     assertEquals(testUser.getId(), subchatFromDb.getAdmin().getId());
@@ -71,9 +73,10 @@ public class SubchatDaoTest {
     em.persist(admin);
     em.persist(testSubchat);
 
-    Subchat subchatFromDb = dao.findByTitle("test subchat");
+    Subchat subchatFromDb = dao.findByUrl("test_subchat");
 
     assertNotEquals(null, subchatFromDb);
+    assertEquals("test_subchat", subchatFromDb.getUrl());
     assertEquals("test subchat", subchatFromDb.getTitle());
     assertEquals("This is a test subchat", subchatFromDb.getDesc());
     assertEquals(admin.getId(), subchatFromDb.getAdmin().getId());

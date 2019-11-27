@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface SubchatDao extends JpaRepository<Subchat, Integer> {
-  public Subchat findByTitle(String title);
+  public Subchat findByUrl(String url);
 }

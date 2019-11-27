@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ChannelDao extends JpaRepository<Channel, Integer> {
-  public Channel findByNameAndSubchatTitle(String name, String title);
+  public Channel findByNameAndSubchatUrl(String name, String url);
 }
