@@ -26,7 +26,7 @@ public class DatabaseSetup {
 
   @PostConstruct
   public void initDb() {
-    if (subService.exists("nexus")) {
+    if (!subService.exists("nexus")) {
       System.out.println("RUNNING DB SETUP!");
       User root = userService.createRoot();
       Subchat nexus = new Subchat(

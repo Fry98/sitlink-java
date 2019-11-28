@@ -14,6 +14,7 @@ import com.teqtrue.sitlink.services.MessageService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -62,5 +63,15 @@ public class MessageController {
 
     newMsg.setChannel(chan);
     msgService.addNewMessage(newMsg);
+  }
+
+  @GetMapping("/message")
+  public void getMessages() {
+    // TODO: Write method
+  }
+
+  @GetMapping("/update")
+  public void getUpdate() {
+    // TODO: Write method
   }
 }

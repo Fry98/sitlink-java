@@ -21,7 +21,7 @@ public class SubchatService {
   }
 
   public boolean exists(String url) {
-    return subDao.findByUrl(url) == null;
+    return subDao.findByUrl(url) != null;
   }
 
   public void persist(Subchat sub) {

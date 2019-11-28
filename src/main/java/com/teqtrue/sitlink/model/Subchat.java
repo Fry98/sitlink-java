@@ -33,7 +33,7 @@ public class Subchat extends BaseEntity {
   @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "subchat")
   private List<Channel> channels = new ArrayList<>();
 
-  @ManyToMany
+  @ManyToMany(cascade = CascadeType.REMOVE)
   private List<User> followers = new ArrayList<>();
 
   public Subchat() {}

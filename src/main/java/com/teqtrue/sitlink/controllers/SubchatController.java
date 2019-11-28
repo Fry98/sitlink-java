@@ -2,8 +2,10 @@ package com.teqtrue.sitlink.controllers;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.teqtrue.sitlink.dao.SubchatDao;
 import com.teqtrue.sitlink.dao.UserDao;
 import com.teqtrue.sitlink.exceptions.RequestException;
+import com.teqtrue.sitlink.model.Subchat;
 import com.teqtrue.sitlink.services.SubchatService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +21,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class SubchatController {
   private final SubchatService subService;
   private final UserDao userDao;
+  private final SubchatDao subDao;
 
   @Autowired
-  public SubchatController(SubchatService subService, UserDao userDao) {
+  public SubchatController(SubchatService subService, UserDao userDao, SubchatDao subDao) {
     this.subService = subService;
     this.userDao = userDao;
+    this.subDao = subDao;
   }
 
   @PostMapping
@@ -44,7 +48,7 @@ public class SubchatController {
       title.length() > 50 ||
       desc.length() < 10 ||
       desc.length() > 100 ||
-      !title.matches("^[a-z0-9\\-_]*$")
+      !url.matches("^[a-z0-9\\-_]*$")
     ) {
       throw new RequestException("Invalid API Request", HttpStatus.BAD_REQUEST);
     }
@@ -52,7 +56,7 @@ public class SubchatController {
       throw new RequestException("Subchat URL is already taken!", HttpStatus.CONFLICT);
     }
     subService.createNewSubchat(
-      url, 
+      url,
       title,
       desc,
       userDao.findById(
@@ -63,8 +67,16 @@ public class SubchatController {
 
   @DeleteMapping
   public void removeSubchat(
-    @RequestParam(name = "sub", required = false) String sub
+    @RequestParam(name = "sub", required = false) String sid,
+    HttpServletRequest req
   ) {
-    // TODO: Write method
+    if (req.getSession().getAttribute("id") == null) throw new RequestException("API Access Forbidden", HttpStatus.FORBIDDEN);
+    if (sid == null) throw new RequestException("Invalid API Request", HttpStatus.BAD_REQUEST);
+    Subchat sub = subDao.findByUrl(sid);
+    if (sub == null) throw new RequestException("Subchat doesn't exist!", HttpStatus.NOT_FOUND);
+    if (sub.getAdmin().getId() != (Integer) req.getSession().getAttribute("id")) {
+      throw new RequestException("Insufficient User Role", HttpStatus.FORBIDDEN);
+    }
+    subDao.delete(sub);
   }
 }

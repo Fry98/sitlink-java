@@ -49,6 +49,7 @@ public class PageController {
     if (subObj == null) return "redirect:/c/nexus";
 
     model.addAttribute("sub", subObj.getUrl());
+    model.addAttribute("subTitle", subObj.getTitle());
     model.addAttribute("chans", subObj.getChannels());
     model.addAttribute("admin", subObj.getAdmin().getId() == req.getSession().getAttribute("id"));
     model.addAttribute("chanArr", subObj.getChannels().stream().map(x -> x.getName()).toArray());

@@ -40,6 +40,10 @@ public class Channel extends BaseEntity {
     return name;
   }
 
+  public Subchat getSubchat() {
+    return subchat;
+  }
+
   public void setSubchat(Subchat sub) {
     subchat = sub;
   }

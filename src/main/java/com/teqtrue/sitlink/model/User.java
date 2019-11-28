@@ -35,7 +35,7 @@ public class User extends BaseEntity {
   @OneToMany(mappedBy = "sender", cascade = CascadeType.REMOVE)
   private List<Message> messages = new ArrayList<>();
 
-  @ManyToMany(mappedBy = "followers")
+  @ManyToMany(mappedBy = "followers", cascade = CascadeType.REMOVE)
   private List<Subchat> followed = new ArrayList<>();
 
   public User() {}
