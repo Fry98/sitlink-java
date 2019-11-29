@@ -77,6 +77,6 @@ public class SubchatController {
     if (sub.getAdmin().getId() != (Integer) req.getSession().getAttribute("id")) {
       throw new RequestException("Insufficient User Role", HttpStatus.FORBIDDEN);
     }
-    subDao.delete(sub);
+    subService.removeSubchat(sub);
   }
 }

@@ -1,7 +1,10 @@
 package com.teqtrue.sitlink.model;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -33,8 +36,8 @@ public class Subchat extends BaseEntity {
   @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "subchat")
   private List<Channel> channels = new ArrayList<>();
 
-  @ManyToMany(cascade = CascadeType.REMOVE)
-  private List<User> followers = new ArrayList<>();
+  @ManyToMany(mappedBy = "followed", cascade = CascadeType.REMOVE)
+  private Set<User> followers = new HashSet<>();
 
   public Subchat() {}
 
@@ -70,5 +73,9 @@ public class Subchat extends BaseEntity {
 
   public User getAdmin() {
     return admin;
+  }
+
+  public Set<User> getFollowers() {
+    return followers;
   }
 }

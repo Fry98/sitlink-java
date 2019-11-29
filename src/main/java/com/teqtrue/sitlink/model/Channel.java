@@ -33,7 +33,7 @@ public class Channel extends BaseEntity {
 
   public Channel(String name, Subchat sub) {
     this.name = name;
-    subchat = sub;
+    setSubchat(sub);
   }
 
   public String getName() {
@@ -46,6 +46,7 @@ public class Channel extends BaseEntity {
 
   public void setSubchat(Subchat sub) {
     subchat = sub;
+    sub.getChannels().add(this);
   }
 
   public void addMessage(Message msg) {

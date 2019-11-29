@@ -31,7 +31,13 @@ public class SubchatService {
   public void createNewSubchat(String url, String title, String desc, User admin) {
     Subchat newSub = new Subchat(url, title, desc, admin);
     Channel defaultChan = new Channel("general", newSub);
+    admin.getSubs().add(newSub);
     subDao.save(newSub);
     chanDao.save(defaultChan);
+  }
+
+  public void removeSubchat(Subchat sub) {
+    sub.getAdmin().getSubs().remove(sub);
+    subDao.delete(sub);
   }
 }

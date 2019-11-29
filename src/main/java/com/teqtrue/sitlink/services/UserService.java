@@ -3,6 +3,7 @@ package com.teqtrue.sitlink.services;
 import com.teqtrue.sitlink.dao.ImageDao;
 import com.teqtrue.sitlink.dao.UserDao;
 import com.teqtrue.sitlink.model.Image;
+import com.teqtrue.sitlink.model.Subchat;
 import com.teqtrue.sitlink.model.User;
 
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
@@ -58,5 +59,15 @@ public class UserService {
     );
     userDao.save(root);
     return root;
+  }
+
+  public void toggleFollow(Integer uid, Subchat sub) {
+    User user = userDao.findById(uid).get();
+    if (user.getFollows().contains(sub)) {
+      user.removeFollow(sub);
+    } else {
+      user.addFollow(sub);
+    }
+    userDao.save(user);
   }
 }
