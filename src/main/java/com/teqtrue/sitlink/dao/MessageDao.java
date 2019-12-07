@@ -13,5 +13,5 @@ import org.springframework.stereotype.Repository;
 public interface MessageDao extends JpaRepository<Message, Integer> {
   public List<Message> findByChannelNameAndChannelSubchatUrl(String name, String url, Pageable pageable);
   public List<Message> findByChannel(Channel channel, Pageable pageable);
-  public List<Message> findByIdGreaterThanOrderByIdAsc(Integer id);
+  public List<Message> findByChannelAndIdGreaterThanOrderByIdAsc(Channel channel, Integer id);
 }

@@ -34,7 +34,7 @@ function startUpdateLoop(immediate) {
           UpdatePool = xhr;
         },
         success(res) {
-          const msgArr = JSON.parse(res);
+          const msgArr = res;
           if (msgArr.length > 0) {            
             insertMessages(msgArr, false, true);
             $('#ctn-wrap')[0].scrollTop = $('#ctn-wrap')[0].scrollHeight;
@@ -209,7 +209,7 @@ $('#subs').click(() => {
   $.ajax('/api/follow', {
     method: 'GET',
     success(res) {
-      flwList = JSON.parse(res);
+      flwList = res;
       updateFollows();
       $('#flw-overlay').toggleClass('overlay-hide');
       $('#sidebar').removeClass('open');
@@ -590,7 +590,7 @@ function fetchMessages() {
         MessagePool = xhr;
       },
       success(res) {
-        const msgArr = JSON.parse(res);
+        const msgArr = res;
         if (msgArr.length < MESSAGE_LIMIT) {
           lastMsg = true;
           $('#loader').css('display', 'none');
@@ -625,7 +625,7 @@ function initChannel() {
       MessagePool = xhr;
     },
     success(res) {
-      const msgArr = JSON.parse(res);
+      const msgArr = res;
       if (msgArr.length < MESSAGE_LIMIT) {
         lastMsg = true;
         $('#loader').css('display', 'none');

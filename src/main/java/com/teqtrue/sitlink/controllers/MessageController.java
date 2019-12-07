@@ -44,11 +44,14 @@ public class MessageController {
   public void addMessage(
     @RequestParam(name = "sid", required = false) String sub,
     @RequestParam(name = "chan", required = false) String chanName,
-    @RequestParam(name = "img", required = false) Boolean img,
+    @RequestParam(name = "img", required = false) String img,
     @RequestParam(name = "content", required = false) String content,
     HttpServletRequest req
   ) {
     if (req.getSession().getAttribute("id") == null) throw new RequestException("API Access Forbidden", HttpStatus.FORBIDDEN);
+    if (sub == null || chanName == null || img == null || content == null) {
+      throw new RequestException("Invalid API Request", HttpStatus.BAD_REQUEST);
+    }
     Integer uid = (Integer) req.getSession().getAttribute("id");
     User user = userDao.findById(uid).get();
     
@@ -58,13 +61,15 @@ public class MessageController {
     Message newMsg = new Message();
     newMsg.setUser(user);
 
-    if (img) {
+    if (img.equals("true")) {
       Image imgObj = ImageUploader.upload(content);
       if (imgObj == null) throw new RequestException("Invalid image file!", HttpStatus.BAD_REQUEST);
       newMsg.setImage(imgObj);
       newMsg.setContent(null);
-    } else {
+    } else if (img.equals("false")) {
       newMsg.setContent(content);
+    } else {
+      throw new RequestException("Invalid image boolean!", HttpStatus.BAD_REQUEST);
     }
 
     newMsg.setChannel(chan);
@@ -80,6 +85,9 @@ public class MessageController {
     HttpServletRequest req
   ) {
     if (req.getSession().getAttribute("id") == null) throw new RequestException("API Access Forbidden", HttpStatus.FORBIDDEN);
+    if (sub == null || chan == null || lim == null || skip == null) {
+      throw new RequestException("Invalid API Request", HttpStatus.BAD_REQUEST);
+    }
 
     int skipNum;
     int limNum;
@@ -96,7 +104,38 @@ public class MessageController {
     Channel chanObj = chanDao.findByNameAndSubchatUrl(chan, sub);
     if (chanObj == null) throw new RequestException("Channel doesn't exist!", HttpStatus.BAD_REQUEST);
     List<Message> messages = msgService.getMessages(chanObj, skipNum, limNum);
+    List<Object> res = msgListToJson(messages, req);
+    Collections.reverse(res);
+    return res;
+  }
 
+  @GetMapping("/update")
+  public List<Object> getUpdate(
+    @RequestParam(name = "sub", required = false) String sub,
+    @RequestParam(name = "chan", required = false) String chan,
+    @RequestParam(name = "last", required = false) String last,
+    HttpServletRequest req
+  ) {
+    if (req.getSession().getAttribute("id") == null) throw new RequestException("API Access Forbidden", HttpStatus.FORBIDDEN);
+    if (sub == null || chan == null || last == null) {
+      throw new RequestException("Invalid API Request", HttpStatus.BAD_REQUEST);
+    }
+
+    int lastNum;
+    try {
+      lastNum = Integer.parseInt(last);
+    } catch (NumberFormatException e) {
+      throw new RequestException("Invalid ID!", HttpStatus.BAD_REQUEST);
+    }
+    if (lastNum < 0 ) throw new RequestException("Invalid ID!", HttpStatus.BAD_REQUEST);
+
+    Channel chanObj = chanDao.findByNameAndSubchatUrl(chan, sub);
+    if (chanObj == null) throw new RequestException("Channel doesn't exist!", HttpStatus.BAD_REQUEST);
+    List<Message> messages = msgService.getUpdate(chanObj, lastNum);
+    return msgListToJson(messages, req);
+  }
+
+  private List<Object> msgListToJson(List<Message> messages, HttpServletRequest req) {
     List<Object> res = new ArrayList<>();
     for (Message msg : messages) {
       Map<String, Object> msgObj = new HashMap<>();
@@ -108,13 +147,6 @@ public class MessageController {
       msgObj.put("owned", msg.getUser().getId().equals(req.getSession().getAttribute("id")));
       res.add(msgObj);
     }
-    Collections.reverse(res);
     return res;
-  }
-
-  @GetMapping("/update")
-  public void getUpdate(HttpServletRequest req) {
-    if (req.getSession().getAttribute("id") == null) throw new RequestException("API Access Forbidden", HttpStatus.FORBIDDEN);
-    // TODO: Write method
   }
 }

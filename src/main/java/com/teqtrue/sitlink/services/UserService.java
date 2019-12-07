@@ -70,4 +70,9 @@ public class UserService {
     }
     userDao.save(user);
   }
+
+  public boolean isFollowing(Integer uid, Subchat sub) {
+    User user = userDao.findById(uid).get();
+    return user.getFollows().contains(sub);
+  }
 }

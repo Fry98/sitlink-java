@@ -31,7 +31,7 @@ public class MessageService {
     return msgDao.findByChannel(chan, new MessagePageable(skip, limit));
   }
 
-  public List<Message> getUpdate(Integer lastId) {
-    return msgDao.findByIdGreaterThanOrderByIdAsc(lastId);
+  public List<Message> getUpdate(Channel chan, Integer lastId) {
+    return msgDao.findByChannelAndIdGreaterThanOrderByIdAsc(chan, lastId);
   }
 }

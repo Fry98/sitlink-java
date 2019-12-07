@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.teqtrue.sitlink.dao.SubchatDao;
 import com.teqtrue.sitlink.model.Subchat;
+import com.teqtrue.sitlink.services.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,10 +16,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 public class PageController {
 
   private final SubchatDao subDao;
+  private final UserService userService;
 
   @Autowired
-  public PageController(SubchatDao subDao) {
+  public PageController(SubchatDao subDao, UserService userService) {
     this.subDao = subDao;
+    this.userService = userService;
   }
 
   @GetMapping("/")
@@ -51,8 +54,16 @@ public class PageController {
     model.addAttribute("sub", subObj.getUrl());
     model.addAttribute("subTitle", subObj.getTitle());
     model.addAttribute("chans", subObj.getChannels());
-    model.addAttribute("admin", subObj.getAdmin().getId() == req.getSession().getAttribute("id"));
     model.addAttribute("chanArr", subObj.getChannels().stream().map(x -> x.getName()).toArray());
+
+    if (subObj.getAdmin().getId() == req.getSession().getAttribute("id")) {
+      model.addAttribute("admin", true);
+      model.addAttribute("followed", false);
+    } else {
+      model.addAttribute("admin", false);
+      model.addAttribute("followed", userService.isFollowing((Integer) req.getSession().getAttribute("id"), subObj));
+    }
+
     return "chat";
   }
 
