@@ -51,4 +51,8 @@ public class Message extends BaseEntity {
   public Image getImage() {
     return img;
   }
+
+  public String getContent() {
+    return content;
+  }
 }

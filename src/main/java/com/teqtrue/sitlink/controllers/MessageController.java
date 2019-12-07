@@ -1,5 +1,11 @@
 package com.teqtrue.sitlink.controllers;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
 import com.teqtrue.sitlink.dao.ChannelDao;
@@ -66,12 +72,49 @@ public class MessageController {
   }
 
   @GetMapping("/message")
-  public void getMessages() {
-    // TODO: Write method
+  public List<Object> getMessages(
+    @RequestParam(name = "sub", required = false) String sub,
+    @RequestParam(name = "chan", required = false) String chan,
+    @RequestParam(name = "lim", required = false) String lim,
+    @RequestParam(name = "skip", required = false) String skip,
+    HttpServletRequest req
+  ) {
+    if (req.getSession().getAttribute("id") == null) throw new RequestException("API Access Forbidden", HttpStatus.FORBIDDEN);
+
+    int skipNum;
+    int limNum;
+    try {
+      skipNum = Integer.parseInt(skip);
+      limNum = Integer.parseInt(lim);
+    } catch (NumberFormatException e) {
+      throw new RequestException("Invalid limit and/or offset!", HttpStatus.BAD_REQUEST);
+    }
+    if (skipNum < 0 || limNum < 0 || limNum > 200) {
+      throw new RequestException("Invalid limit and/or offset!", HttpStatus.BAD_REQUEST);
+    }
+
+    Channel chanObj = chanDao.findByNameAndSubchatUrl(chan, sub);
+    if (chanObj == null) throw new RequestException("Channel doesn't exist!", HttpStatus.BAD_REQUEST);
+    List<Message> messages = msgService.getMessages(chanObj, skipNum, limNum);
+
+    List<Object> res = new ArrayList<>();
+    for (Message msg : messages) {
+      Map<String, Object> msgObj = new HashMap<>();
+      msgObj.put("id", msg.getId());
+      msgObj.put("nick", msg.getUser().getNick());
+      msgObj.put("upic", msg.getUser().getImg().getUrl());
+      msgObj.put("img", msg.getImage() != null);
+      msgObj.put("content", msg.getImage() == null ? msg.getContent() : msg.getImage().getUrl());
+      msgObj.put("owned", msg.getUser().getId().equals(req.getSession().getAttribute("id")));
+      res.add(msgObj);
+    }
+    Collections.reverse(res);
+    return res;
   }
 
   @GetMapping("/update")
-  public void getUpdate() {
+  public void getUpdate(HttpServletRequest req) {
+    if (req.getSession().getAttribute("id") == null) throw new RequestException("API Access Forbidden", HttpStatus.FORBIDDEN);
     // TODO: Write method
   }
 }

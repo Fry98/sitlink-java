@@ -25,4 +25,8 @@ public class Image extends BaseEntity {
     this.width = width;
     this.height = height;
   }
+
+  public String getUrl() {
+    return url;
+  }
 }
