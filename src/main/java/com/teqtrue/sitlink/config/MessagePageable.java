@@ -10,7 +10,7 @@ public class MessagePageable implements Pageable {
 
   public MessagePageable(int offset, int limit) {
     this.offset = offset;
-    req = PageRequest.of(offset, limit, Sort.by("id").ascending());
+    req = PageRequest.of(offset, limit, Sort.by("id").descending());
   }
 
   @Override

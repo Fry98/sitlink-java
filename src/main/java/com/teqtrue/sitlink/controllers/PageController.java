@@ -9,6 +9,7 @@ import com.teqtrue.sitlink.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -41,6 +42,7 @@ public class PageController {
   @GetMapping("/c/{sub}")
   public String chat(
     @PathVariable("sub") String sub,
+    @CookieValue(name = "light", required = false) String light,
     Model model,
     HttpServletRequest req
   ) {
@@ -55,6 +57,7 @@ public class PageController {
     model.addAttribute("subTitle", subObj.getTitle());
     model.addAttribute("chans", subObj.getChannels());
     model.addAttribute("chanArr", subObj.getChannels().stream().map(x -> x.getName()).toArray());
+    model.addAttribute("light", light != null);
 
     if (subObj.getAdmin().getId() == req.getSession().getAttribute("id")) {
       model.addAttribute("admin", true);

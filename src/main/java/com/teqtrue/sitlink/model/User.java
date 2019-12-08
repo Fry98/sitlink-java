@@ -26,7 +26,7 @@ public class User extends BaseEntity {
   @Column(nullable = false)
   private String mail;
 
-  @OneToOne
+  @OneToOne(cascade = CascadeType.REMOVE)
   private Image img;
 
   @Column(nullable = false)
@@ -38,7 +38,7 @@ public class User extends BaseEntity {
   @OneToMany(mappedBy = "sender", cascade = CascadeType.REMOVE)
   private List<Message> messages = new ArrayList<>();
 
-  @ManyToMany(cascade = CascadeType.REMOVE)
+  @ManyToMany
   private Set<Subchat> followed = new HashSet<>();
 
   public User() {}

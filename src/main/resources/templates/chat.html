@@ -5,8 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <meta name="theme-color" content="#1c7ec0" />
-	<link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700" rel="stylesheet">
-  <link id='sheet' rel="stylesheet" href="/css/chat-dark.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700" rel="stylesheet">
+  <link th:if="${light}" id='sheet' rel="stylesheet" href="/css/chat-light.min.css">
+  <link th:if="${!light}" id='sheet' rel="stylesheet" href="/css/chat-dark.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
   <link rel="shortcut icon" type="image/png" href="/assets/favicon.png"/>
@@ -113,11 +114,13 @@
     <aside id='sidebar'>
       <!-- Channel list and selector -->
       <ul id='chans'>
-        <li
-          th:each="chan, iter: ${chans}"
-          th:text="'#' + ${chan.getName()}"
-          th:class="${iter.index == 0} ? selected : ''"
-        ></li>
+        <li th:each="chan, iter: ${chans}" th:class="${iter.index == 0} ? selected : ''">
+          <span th:text="'#' + ${chan.getName()}"></span>
+          <div class='chan-remove' th:if="${admin}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0V0z"/><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zm2.46-7.12l1.41-1.41L12 12.59l2.12-2.12 1.41 1.41L13.41 14l2.12 2.12-1.41 1.41L12 15.41l-2.12 2.12-1.41-1.41L10.59 14l-2.13-2.12zM15.5 4l-1-1h-5l-1 1H5v2h14V4z"/><path fill="none" d="M0 0h24v24H0z"/></svg>
+          </div>
+        </li>
+        <li id='chan-add' th:if="${admin}">+ Add Channel</li>
       </ul>
       <!-- Subchats and follow button -->
       <div id='ctrls'>

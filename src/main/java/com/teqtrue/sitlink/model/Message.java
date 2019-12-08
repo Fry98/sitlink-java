@@ -1,5 +1,6 @@
 package com.teqtrue.sitlink.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -11,7 +12,7 @@ public class Message extends BaseEntity {
   @ManyToOne
   private User sender;
 
-  @OneToOne
+  @OneToOne(cascade = CascadeType.REMOVE)
   private Image img;
 
   @Column

@@ -1,7 +1,6 @@
 package com.teqtrue.sitlink.controllers;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +11,7 @@ import com.teqtrue.sitlink.dao.ChannelDao;
 import com.teqtrue.sitlink.dao.UserDao;
 import com.teqtrue.sitlink.exceptions.RequestException;
 import com.teqtrue.sitlink.lib.ImageUploader;
+import com.teqtrue.sitlink.lib.Markdown;
 import com.teqtrue.sitlink.model.Channel;
 import com.teqtrue.sitlink.model.Image;
 import com.teqtrue.sitlink.model.Message;
@@ -67,7 +67,7 @@ public class MessageController {
       newMsg.setImage(imgObj);
       newMsg.setContent(null);
     } else if (img.equals("false")) {
-      newMsg.setContent(content);
+      newMsg.setContent(Markdown.parse(content));
     } else {
       throw new RequestException("Invalid image boolean!", HttpStatus.BAD_REQUEST);
     }
@@ -105,7 +105,6 @@ public class MessageController {
     if (chanObj == null) throw new RequestException("Channel doesn't exist!", HttpStatus.BAD_REQUEST);
     List<Message> messages = msgService.getMessages(chanObj, skipNum, limNum);
     List<Object> res = msgListToJson(messages, req);
-    Collections.reverse(res);
     return res;
   }
 
@@ -140,7 +139,7 @@ public class MessageController {
     for (Message msg : messages) {
       Map<String, Object> msgObj = new HashMap<>();
       msgObj.put("id", msg.getId());
-      msgObj.put("nick", msg.getUser().getNick());
+      msgObj.put("nick", Markdown.escape(msg.getUser().getNick()));
       msgObj.put("upic", msg.getUser().getImg().getUrl());
       msgObj.put("img", msg.getImage() != null);
       msgObj.put("content", msg.getImage() == null ? msg.getContent() : msg.getImage().getUrl());

@@ -37,7 +37,7 @@ public class SubchatService {
   }
 
   public void removeSubchat(Subchat sub) {
-    sub.getAdmin().getSubs().remove(sub);
     subDao.delete(sub);
+    sub.getAdmin().getSubs().remove(sub);
   }
 }

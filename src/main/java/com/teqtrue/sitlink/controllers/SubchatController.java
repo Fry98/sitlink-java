@@ -72,11 +72,13 @@ public class SubchatController {
   ) {
     if (req.getSession().getAttribute("id") == null) throw new RequestException("API Access Forbidden", HttpStatus.FORBIDDEN);
     if (sid == null) throw new RequestException("Invalid API Request", HttpStatus.BAD_REQUEST);
+
     Subchat sub = subDao.findByUrl(sid);
     if (sub == null) throw new RequestException("Subchat doesn't exist!", HttpStatus.NOT_FOUND);
     if (sub.getAdmin().getId() != (Integer) req.getSession().getAttribute("id")) {
       throw new RequestException("Insufficient User Role", HttpStatus.FORBIDDEN);
     }
+    
     subService.removeSubchat(sub);
   }
 }

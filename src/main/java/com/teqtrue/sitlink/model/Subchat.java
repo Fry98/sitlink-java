@@ -36,7 +36,7 @@ public class Subchat extends BaseEntity {
   @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "subchat")
   private List<Channel> channels = new ArrayList<>();
 
-  @ManyToMany(mappedBy = "followed", cascade = CascadeType.REMOVE)
+  @ManyToMany(mappedBy = "followed")
   private Set<User> followers = new HashSet<>();
 
   public Subchat() {}
