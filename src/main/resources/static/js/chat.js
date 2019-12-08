@@ -331,7 +331,7 @@ $('#new-sub-form').submit((e) => {
       desc: $('#new-sub-desc').val()
     },
     success() {
-      location.href = `/c/${$('#new-sub-url').val()}`;
+      location.href = `/c/${$('#new-sub-url').val().toLowerCase()}`;
     },
     error(res) {
       alert(res.responseText);

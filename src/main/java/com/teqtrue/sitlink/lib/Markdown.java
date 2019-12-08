@@ -51,12 +51,12 @@ public class Markdown {
 
   private static String findLinks(String str) {
     final String regex = "(?<=\\b)https?:\\/\\/(www\\.)?[a-z0-9\\-_\\.]{2,256}\\.[a-z]{2,6}(((\\/|\\?)[a-z0-9\\/#?&=\\-_.~]+)|\\/)?";
-    Pattern ptr = Pattern.compile(regex);
+    Pattern ptr = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
     Matcher match = ptr.matcher(str);
     while (match.find()) {
       str = str.substring(0, match.start()) +
-        "<a href=\"" + match.group() +
-        "\">" + match.group() +
+        "<a href='" + match.group() +
+        "' rel='noopener' target='_blank'>" + match.group() +
         "</a>" + str.substring(match.end(), str.length());
     }
     return str;

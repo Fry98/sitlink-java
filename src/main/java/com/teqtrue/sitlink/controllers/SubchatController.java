@@ -56,7 +56,7 @@ public class SubchatController {
       throw new RequestException("Subchat URL is already taken!", HttpStatus.CONFLICT);
     }
     subService.createNewSubchat(
-      url,
+      url.toLowerCase(),
       title,
       desc,
       userDao.findById(

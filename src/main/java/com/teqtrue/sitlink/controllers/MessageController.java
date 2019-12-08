@@ -67,7 +67,7 @@ public class MessageController {
       newMsg.setImage(imgObj);
       newMsg.setContent(null);
     } else if (img.equals("false")) {
-      newMsg.setContent(Markdown.parse(content));
+      newMsg.setContent(content);
     } else {
       throw new RequestException("Invalid image boolean!", HttpStatus.BAD_REQUEST);
     }
@@ -142,7 +142,7 @@ public class MessageController {
       msgObj.put("nick", Markdown.escape(msg.getUser().getNick()));
       msgObj.put("upic", msg.getUser().getImg().getUrl());
       msgObj.put("img", msg.getImage() != null);
-      msgObj.put("content", msg.getImage() == null ? msg.getContent() : msg.getImage().getUrl());
+      msgObj.put("content", msg.getImage() == null ? Markdown.parse(msg.getContent()) : msg.getImage().getUrl());
       msgObj.put("owned", msg.getUser().getId().equals(req.getSession().getAttribute("id")));
       res.add(msgObj);
     }
