@@ -1,5 +1,9 @@
 package com.teqtrue.sitlink.services;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import javax.transaction.Transactional;
+
 import com.teqtrue.sitlink.dao.ChannelDao;
 import com.teqtrue.sitlink.dao.SubchatDao;
 import com.teqtrue.sitlink.model.Channel;
@@ -13,11 +17,13 @@ import org.springframework.stereotype.Service;
 public class SubchatService {
   private final SubchatDao subDao;
   private final ChannelDao chanDao;
+  private final EntityManager em;
 
   @Autowired
-  public SubchatService(SubchatDao subDao, ChannelDao chanDao) {
+  public SubchatService(SubchatDao subDao, ChannelDao chanDao, EntityManager em) {
     this.subDao = subDao;
     this.chanDao = chanDao;
+    this.em = em;
   }
 
   public boolean exists(String url) {
@@ -36,7 +42,11 @@ public class SubchatService {
     chanDao.save(defaultChan);
   }
 
+  @Transactional
   public void removeSubchat(Subchat sub) {
+    Query q = em.createNativeQuery("DELETE FROM user_subchat WHERE subchat_id = ?");
+    q.setParameter(1, sub.getId());
+    q.executeUpdate();
     subDao.delete(sub);
     sub.getAdmin().getSubs().remove(sub);
   }

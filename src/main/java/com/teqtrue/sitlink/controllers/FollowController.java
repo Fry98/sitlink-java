@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -65,7 +64,7 @@ public class FollowController {
     userService.toggleFollow((Integer) req.getSession().getAttribute("id"), sub);
   }
 
-  private List<Object> getSubList(Set<Subchat> subs) {
+  private List<Object> getSubList(List<Subchat> subs) {
     List<Object> res = new ArrayList<>();
     for (Subchat sub : subs) {
       Map<String, String> subObj = new HashMap<>();
