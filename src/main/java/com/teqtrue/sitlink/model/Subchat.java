@@ -13,6 +13,7 @@ import javax.persistence.Index;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 @Entity
@@ -34,6 +35,7 @@ public class Subchat extends BaseEntity {
   private User admin;
 
   @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "subchat")
+  @OrderBy("id ASC")
   private List<Channel> channels = new ArrayList<>();
 
   @ManyToMany(mappedBy = "followed")

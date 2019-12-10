@@ -83,14 +83,4 @@ public class UserServiceTest {
 
     assertFalse(userService.authUser(user, "incorrectPassword"));
   }
-
-  @Test
-  public void createRootCreatesRootUserWithAllPropertiesSetToRoot() {
-    User root = userService.createRoot();
-
-    assertEquals("root", root.getNick());
-    assertEquals("root", root.getMail());
-    assertNull(root.getImg());
-    assertEquals("root", root.getPassword());
-  }
 }
