@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class PageController {
@@ -42,6 +43,7 @@ public class PageController {
   @GetMapping("/c/{sub}")
   public String chat(
     @PathVariable("sub") String sub,
+    @RequestParam(name = "legacy", required = false) String legacy,
     @CookieValue(name = "light", required = false) String light,
     Model model,
     HttpServletRequest req
@@ -58,6 +60,8 @@ public class PageController {
     model.addAttribute("chans", subObj.getChannels());
     model.addAttribute("chanArr", subObj.getChannels().stream().map(x -> x.getName()).toArray());
     model.addAttribute("light", light != null);
+    model.addAttribute("legacy", legacy != null);
+    model.addAttribute("uid", (Integer) req.getSession().getAttribute("id"));
 
     if (subObj.getAdmin().getId() == req.getSession().getAttribute("id")) {
       model.addAttribute("admin", true);

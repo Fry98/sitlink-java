@@ -13,6 +13,8 @@ let UpdatePool = null;
 let MessagePool = null;
 let confirmCallback = null;
 let chanIndex = null;
+let stompClient = null;
+let subscription = null;
 let subUrlInp = '';
 let chanNameInp = '';
 const MESSAGE_LIMIT = 30;
@@ -23,8 +25,26 @@ updateFollowToggle();
 initChannel();
 startUpdateLoop();
 
+// WebSocket client setup
+if (!legacy) {
+  const socket = new SockJS('/ws');
+  stompClient = Stomp.over(socket);
+  stompClient.connect({}, () => {
+    subscription = stompClient.subscribe(`/${sub}/${chans[0]}`, handleMessage);
+  });
+}
+
+// Message handler
+function handleMessage(message) {
+  const msgObj = JSON.parse(message.body);
+  insertMessages([msgObj], false, true);
+  $('#ctn-wrap')[0].scrollTop = $('#ctn-wrap')[0].scrollHeight;
+  if (msgObj.uid !== uid) msgSound.play();
+}
+
 // Message polling request
 function startUpdateLoop(immediate) {
+  if (!legacy) return;
   clearInterval(updateLoop);
   function update() {
     if (UpdatePool === null) {
@@ -41,7 +61,7 @@ function startUpdateLoop(immediate) {
             lastId = msgArr[msgArr.length - 1].id;
           }
           for (const msg of msgArr) {
-            if (!msg.owned) {
+            if (msg.uid !== uid) {
               msgSound.play();
               break;
             }
@@ -84,7 +104,9 @@ $('body').on('click', '#chans li', function() {
     lastMsg = false;
     lastId = 0;
     abortRequests();
+    if (!legacy) subscription.unsubscribe();
     initChannel();
+    if (!legacy) subscription = stompClient.subscribe(`/${sub}/${chanName}`, handleMessage);
   }
 });
 
@@ -546,7 +568,7 @@ function insertMessages(msgArr, prepend, scroll) {
 
 // Template for inserting text messages
 function textTemplate(msg) {
-  return `<div class='msg ${msgOwned(msg.owned)}'>
+  return `<div class='msg ${msgOwned(msg)}'>
             <div class='nametag'>
               <div class='pro-img' style='background-image: url("https://i.imgur.com/${msg.upic}t.png");'></div>
               <span>${msg.nick}</span>
@@ -557,7 +579,7 @@ function textTemplate(msg) {
 
 // Template for inserting image messages
 function imgTemplate(msg, scroll) {
-  return `<div class='msg ${msgOwned(msg.owned)}'>
+  return `<div class='msg ${msgOwned(msg)}'>
             <div class='nametag'>
               <div class='pro-img' style='background-image: url("https://i.imgur.com/${msg.upic}t.png);'></div>
               <span>${msg.nick}</span>
@@ -574,8 +596,8 @@ function imgTemplate(msg, scroll) {
   }
 }
 
-function msgOwned(owned) {
-  if (owned) {
+function msgOwned(msg) {
+  if (uid === msg.uid) {
     return 'own';
   }
   return '';

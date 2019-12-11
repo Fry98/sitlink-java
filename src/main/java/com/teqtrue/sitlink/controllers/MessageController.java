@@ -20,6 +20,7 @@ import com.teqtrue.sitlink.services.MessageService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,12 +33,14 @@ public class MessageController {
   private final ChannelDao chanDao;
   private final UserDao userDao;
   private final MessageService msgService;
+  private final SimpMessagingTemplate ws;
 
   @Autowired
-  public MessageController(ChannelDao chanDao, UserDao userDao, MessageService msgService) {
+  public MessageController(ChannelDao chanDao, UserDao userDao, MessageService msgService, SimpMessagingTemplate ws) {
     this.chanDao = chanDao;
     this.userDao = userDao;
     this.msgService = msgService;
+    this.ws = ws;
   }
 
   @PostMapping("/message")
@@ -74,6 +77,8 @@ public class MessageController {
 
     newMsg.setChannel(chan);
     msgService.addNewMessage(newMsg);
+
+    ws.convertAndSend("/" + chan.getSubchat().getUrl() + "/" + chan.getName(), msgToJson(newMsg));
   }
 
   @GetMapping("/message")
@@ -104,7 +109,7 @@ public class MessageController {
     Channel chanObj = chanDao.findByNameAndSubchatUrl(chan, sub);
     if (chanObj == null) throw new RequestException("Channel doesn't exist!", HttpStatus.BAD_REQUEST);
     List<Message> messages = msgService.getMessages(chanObj, skipNum, limNum);
-    List<Object> res = msgListToJson(messages, req);
+    List<Object> res = msgListToJson(messages);
     return res;
   }
 
@@ -131,21 +136,23 @@ public class MessageController {
     Channel chanObj = chanDao.findByNameAndSubchatUrl(chan, sub);
     if (chanObj == null) throw new RequestException("Channel doesn't exist!", HttpStatus.BAD_REQUEST);
     List<Message> messages = msgService.getUpdate(chanObj, lastNum);
-    return msgListToJson(messages, req);
+    return msgListToJson(messages);
   }
 
-  private List<Object> msgListToJson(List<Message> messages, HttpServletRequest req) {
+  private List<Object> msgListToJson(List<Message> messages) {
     List<Object> res = new ArrayList<>();
-    for (Message msg : messages) {
-      Map<String, Object> msgObj = new HashMap<>();
-      msgObj.put("id", msg.getId());
-      msgObj.put("nick", Markdown.escape(msg.getUser().getNick()));
-      msgObj.put("upic", msg.getUser().getImg().getUrl());
-      msgObj.put("img", msg.getImage() != null);
-      msgObj.put("content", msg.getImage() == null ? Markdown.parse(msg.getContent()) : msg.getImage().getUrl());
-      msgObj.put("owned", msg.getUser().getId().equals(req.getSession().getAttribute("id")));
-      res.add(msgObj);
-    }
+    for (Message msg : messages) res.add(msgToJson(msg));
     return res;
+  }
+
+  private Map<String, Object> msgToJson(Message msg) {
+    Map<String, Object> msgObj = new HashMap<>();
+    msgObj.put("id", msg.getId());
+    msgObj.put("nick", Markdown.escape(msg.getUser().getNick()));
+    msgObj.put("upic", msg.getUser().getImg().getUrl());
+    msgObj.put("img", msg.getImage() != null);
+    msgObj.put("content", msg.getImage() == null ? Markdown.parse(msg.getContent()) : msg.getImage().getUrl());
+    msgObj.put("uid", msg.getUser().getId());
+    return msgObj;
   }
 }
