@@ -11,6 +11,7 @@ import com.teqtrue.sitlink.services.ChannelService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,15 +21,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/channel")
 public class ChannelController {
-  private ChannelService chanService;
-  private SubchatDao subDao;
-  private ChannelDao chanDao;
+  private final ChannelService chanService;
+  private final SubchatDao subDao;
+  private final ChannelDao chanDao;
+  private final SimpMessagingTemplate ws;
 
   @Autowired
-  public ChannelController(ChannelService chanService, SubchatDao subDao, ChannelDao chanDao) {
+  public ChannelController(ChannelService chanService, SubchatDao subDao, ChannelDao chanDao, SimpMessagingTemplate ws) {
     this.chanService = chanService;
     this.subDao = subDao;
     this.chanDao = chanDao;
+    this.ws = ws;
   }
 
   @PostMapping
@@ -78,5 +81,6 @@ public class ChannelController {
     }
 
     chanDao.delete(chanObj);
+    ws.convertAndSend("/" + chanObj.getSubchat().getUrl() + "/" + chanObj.getName(), "refresh");
   }
 }

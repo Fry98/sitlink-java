@@ -29,13 +29,16 @@ startUpdateLoop();
 if (!legacy) {
   const socket = new SockJS('/ws');
   stompClient = Stomp.over(socket);
+  stompClient.debug = null;
   stompClient.connect({}, () => {
     subscription = stompClient.subscribe(`/${sub}/${chans[0]}`, handleMessage);
+    stompClient.subscribe(`/${sub}`, () => location.reload());
   });
 }
 
 // Message handler
 function handleMessage(message) {
+  if (message.body === "refresh") location.reload();
   const msgObj = JSON.parse(message.body);
   insertMessages([msgObj], false, true);
   $('#ctn-wrap')[0].scrollTop = $('#ctn-wrap')[0].scrollHeight;

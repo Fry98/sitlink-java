@@ -10,6 +10,7 @@ import com.teqtrue.sitlink.services.SubchatService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,12 +23,14 @@ public class SubchatController {
   private final SubchatService subService;
   private final UserDao userDao;
   private final SubchatDao subDao;
+  private final SimpMessagingTemplate ws;
 
   @Autowired
-  public SubchatController(SubchatService subService, UserDao userDao, SubchatDao subDao) {
+  public SubchatController(SubchatService subService, UserDao userDao, SubchatDao subDao, SimpMessagingTemplate ws) {
     this.subService = subService;
     this.userDao = userDao;
     this.subDao = subDao;
+    this.ws = ws;
   }
 
   @PostMapping
@@ -80,5 +83,6 @@ public class SubchatController {
     }
     
     subService.removeSubchat(sub);
+    ws.convertAndSend("/" + sub.getUrl(), "");
   }
 }
