@@ -21,6 +21,7 @@ const MESSAGE_LIMIT = 30;
 const msgSound = new Audio('/assets/light.mp3');
 
 // Inital page setup
+checkUrlHash();
 updateFollowToggle();
 initChannel();
 startUpdateLoop();
@@ -58,7 +59,7 @@ function startUpdateLoop(immediate) {
         },
         success(res) {
           const msgArr = res;
-          if (msgArr.length > 0) {            
+          if (msgArr.length > 0) {
             insertMessages(msgArr, false, true);
             $('#ctn-wrap')[0].scrollTop = $('#ctn-wrap')[0].scrollHeight;
             lastId = msgArr[msgArr.length - 1].id;
@@ -101,6 +102,7 @@ $('body').on('click', '#chans li', function() {
     $('#sidebar').removeClass('open');
     currChan = newIndex;
     chanName = chans[currChan];
+    location.hash = chanName;
     scrollDeac = true;
     $('.msg').remove();
     skip = 0;
@@ -738,4 +740,23 @@ function removeSubchat() {
       alert(res.responseText);
     }
   });
+}
+
+// Switches to channel specified in the URL
+function checkUrlHash() {
+  const fragment = location.hash.substr(1).toLowerCase();
+  if (fragment === '') {
+    location.hash = chanName;
+    return;
+  }
+  for (let i = 0; i < chans.length; i++) {
+    if (chans[i] === fragment) {
+      $('#chans li')[currChan].classList.remove('selected');
+      chanName = fragment;
+      currChan = i;
+      $('#chans li')[currChan].classList.add('selected');
+      break;
+    }
+  }
+  location.hash = chanName;
 }
