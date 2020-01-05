@@ -15,7 +15,6 @@ import javax.persistence.PersistenceContext;
 import com.teqtrue.sitlink.App;
 import com.teqtrue.sitlink.model.User;
 
-// For explanatory comments, see ProductDaoTest
 @RunWith(SpringRunner.class)
 @DataJpaTest
 @ComponentScan(basePackageClasses = App.class)
