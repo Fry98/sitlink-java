@@ -1,4 +1,5 @@
 # SITLINK
+## Live Demo: http://sitlink.tk
 Stránka SITLINK je real-time chatovací aplikace (podobná třeba aplikaci Discord),
 která nabízí tvorbu vlastních uživatelských serverů (Subchatů), které mohou být
 následně rozděleny do tematicky zaměřených podsekcí (channelů). Uživatel může do
@@ -16,6 +17,3 @@ Stránka bude obsahovat přihlašovací a registrační obrazovku a okno samotn�
 Chat v sobě navíc ještě obsahuje tvz. Subchat Menu ve formě overlaye, které umožňuje
 rychlý přístup ke sledovaným a vlastněným Subchatům. Veškeré ostatní funkce aplikace
 (tvorba / mazání serverů, atd.) jsou také integrované v rámci chatovací obrazovky.
-___
-Live demo této aplikace je dostupné na stránce: http://wa.toad.cz/~tomanfi2/
-(Implementace v jazyce PHP)

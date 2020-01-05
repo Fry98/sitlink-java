@@ -1,7 +1,6 @@
 package com.teqtrue.sitlink.services;
 
 import com.teqtrue.sitlink.dao.SubchatDao;
-import com.teqtrue.sitlink.model.Channel;
 import com.teqtrue.sitlink.model.Subchat;
 import com.teqtrue.sitlink.model.User;
 import org.junit.Test;

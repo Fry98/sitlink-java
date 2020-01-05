@@ -1,7 +1,5 @@
 package com.teqtrue.sitlink.services;
 
-import com.teqtrue.sitlink.dao.ChannelDao;
-import com.teqtrue.sitlink.dao.MessageDao;
 import com.teqtrue.sitlink.model.Subchat;
 import org.junit.Test;
 import org.junit.runner.RunWith;
