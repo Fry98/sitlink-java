@@ -1,5 +1,4 @@
 # SITLINK
-## Live Demo: http://sitlink.tk
 Stránka SITLINK je real-time chatovací aplikace (podobná třeba aplikaci Discord),
 která nabízí tvorbu vlastních uživatelských serverů (Subchatů), které mohou být
 následně rozděleny do tematicky zaměřených podsekcí (channelů). Uživatel může do
